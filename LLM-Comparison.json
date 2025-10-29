@@ -1,0 +1,812 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "LLM Comparison Backend APIs",
+		"description": "Complete API collection for the LLM Comparison Backend with conversation persistence features",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Chat APIs",
+			"item": [
+				{
+					"name": "Send Message (with session)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/chat/ask?question={{question}}&model={{model}}&sessionId={{sessionId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chat",
+								"ask"
+							],
+							"query": [
+								{
+									"key": "question",
+									"value": "{{question}}",
+									"description": "The question to ask the AI"
+								},
+								{
+									"key": "model",
+									"value": "{{model}}",
+									"description": "AI model to use (deepseek, grok, gemma, all) - 'all' for comparison mode"
+								},
+								{
+									"key": "sessionId",
+									"value": "{{sessionId}}",
+									"description": "Session ID for conversation persistence"
+								}
+							]
+						},
+						"description": "Send a message to the AI with conversation context"
+					},
+					"response": []
+				},
+				{
+					"name": "Send Message (auto session)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/chat/ask?question={{question}}&model={{model}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chat",
+								"ask"
+							],
+							"query": [
+								{
+									"key": "question",
+									"value": "{{question}}",
+									"description": "The question to ask the AI"
+								},
+								{
+									"key": "model",
+									"value": "{{model}}",
+									"description": "AI model to use (deepseek, grok, gemma)"
+								}
+							]
+						},
+						"description": "Send a message to the AI without specifying session (auto-generated)"
+					},
+					"response": []
+				},
+				{
+					"name": "Send Message (minimal)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/chat/ask?question={{question}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chat",
+								"ask"
+							],
+							"query": [
+								{
+									"key": "question",
+									"value": "{{question}}",
+									"description": "The question to ask the AI"
+								}
+							]
+						},
+						"description": "Send a message with minimal parameters (uses default model and auto-generated session)"
+					},
+					"response": []
+				},
+				{
+					"name": "Send Message (Comparison Mode)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/chat/ask?question={{question}}&model=all&sessionId={{sessionId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chat",
+								"ask"
+							],
+							"query": [
+								{
+									"key": "question",
+									"value": "{{question}}",
+									"description": "The question to ask all AI models"
+								},
+								{
+									"key": "model",
+									"value": "all",
+									"description": "Compare all models (deepseek, grok, gemma)"
+								},
+								{
+									"key": "sessionId",
+									"value": "{{sessionId}}",
+									"description": "Session ID for conversation persistence"
+								}
+							]
+						},
+						"description": "Send a message to all AI models for comparison"
+					},
+					"response": [
+						{
+							"name": "Comparison Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/chat/ask?question=What is artificial intelligence?&model=all&sessionId=session123",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"chat",
+										"ask"
+									],
+									"query": [
+										{
+											"key": "question",
+											"value": "What is artificial intelligence?",
+											"description": "The question to ask all AI models"
+										},
+										{
+											"key": "model",
+											"value": "all",
+											"description": "Compare all models (deepseek, grok, gemma)"
+										},
+										{
+											"key": "sessionId",
+											"value": "session123",
+											"description": "Session ID for conversation persistence"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"question\": \"What is artificial intelligence?\",\n    \"sessionId\": \"session123\",\n    \"responses\": {\n        \"deepseek/deepseek-chat-v3.1:free\": \"AI is the simulation of human intelligence in machines...\",\n        \"x-ai/grok-4-fast:free\": \"Artificial Intelligence refers to the development of computer systems...\",\n        \"google/gemma-3-27b-it:free\": \"AI is a branch of computer science that aims to create intelligent machines...\"\n    },\n    \"modelResponses\": [\n        {\n            \"model\": \"deepseek/deepseek-chat-v3.1:free\",\n            \"response\": \"AI is the simulation of human intelligence in machines...\",\n            \"status\": \"success\"\n        },\n        {\n            \"model\": \"x-ai/grok-4-fast:free\",\n            \"response\": \"Artificial Intelligence refers to the development of computer systems...\",\n            \"status\": \"success\"\n        },\n        {\n            \"model\": \"google/gemma-3-27b-it:free\",\n            \"response\": \"AI is a branch of computer science that aims to create intelligent machines...\",\n            \"status\": \"success\"\n        }\n    ],\n    \"timestamp\": \"2025-09-30T02:07:15.123Z\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Conversation History APIs",
+			"item": [
+				{
+					"name": "Get Conversation History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/chat/history/{{sessionId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chat",
+								"history",
+								"{{sessionId}}"
+							]
+						},
+						"description": "Retrieve all messages in a conversation"
+					},
+					"response": [
+						{
+							"name": "Conversation History with Models",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/chat/history/session123",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"chat",
+										"history",
+										"session123"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"role\": \"user\",\n        \"content\": \"What is artificial intelligence?\",\n        \"timestamp\": \"2025-09-30T01:05:45.123Z\",\n        \"model\": null\n    },\n    {\n        \"role\": \"assistant\",\n        \"content\": \"AI is the simulation of human intelligence in machines...\",\n        \"timestamp\": \"2025-09-30T01:05:46.456Z\",\n        \"model\": \"deepseek/deepseek-chat-v3.1:free\"\n    },\n    {\n        \"role\": \"assistant\",\n        \"content\": \"Artificial Intelligence refers to the development of computer systems...\",\n        \"timestamp\": \"2025-09-30T01:05:47.789Z\",\n        \"model\": \"x-ai/grok-4-fast:free\"\n    },\n    {\n        \"role\": \"assistant\",\n        \"content\": \"AI is a branch of computer science that aims to create intelligent machines...\",\n        \"timestamp\": \"2025-09-30T01:05:48.123Z\",\n        \"model\": \"google/gemma-3-27b-it:free\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Clear Conversation History",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/chat/history/{{sessionId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chat",
+								"history",
+								"{{sessionId}}"
+							]
+						},
+						"description": "Delete all messages in a conversation"
+					},
+					"response": []
+				}
+			]
+			},
+			{
+				"name": "Conversation Management APIs",
+				"item": [
+					{
+						"name": "List All Conversations",
+						"request": {
+							"method": "GET",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"url": {
+								"raw": "{{base_url}}/chat/conversations",
+								"host": [
+									"{{base_url}}"
+								],
+								"path": [
+									"chat",
+									"conversations"
+								]
+							},
+						"description": "Get a list of all conversations for sidebar display"
+					},
+					"response": [
+						{
+							"name": "Conversations List with Models",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/chat/conversations",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"chat",
+										"conversations"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"sessionId\": \"session_1759174001334_zv2i2qxpk\",\n        \"createdAt\": \"2025-09-30T01:05:45.123Z\",\n        \"messageCount\": 7,\n        \"title\": \"What is artificial intelligence?\",\n        \"lastMessageAt\": \"2025-09-30T01:10:30.456Z\",\n        \"models\": [\n            \"deepseek/deepseek-chat-v3.1:free\",\n            \"x-ai/grok-4-fast:free\",\n            \"google/gemma-3-27b-it:free\"\n        ]\n    },\n    {\n        \"sessionId\": \"session_1759174001335_abc123def\",\n        \"createdAt\": \"2025-09-30T00:30:15.789Z\",\n        \"messageCount\": 10,\n        \"title\": \"Explain machine learning concepts\",\n        \"lastMessageAt\": \"2025-09-30T00:45:20.123Z\",\n        \"models\": [\n            \"deepseek/deepseek-chat-v3.1:free\",\n            \"x-ai/grok-4-fast:free\"\n        ]\n    }\n]"
+						}
+					]
+					},
+					{
+						"name": "Get Conversation Details",
+						"request": {
+							"method": "GET",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"url": {
+								"raw": "{{base_url}}/chat/conversations/{{sessionId}}",
+								"host": [
+									"{{base_url}}"
+								],
+								"path": [
+									"chat",
+									"conversations",
+									"{{sessionId}}"
+								]
+							},
+						"description": "Get detailed information about a specific conversation including all messages"
+					},
+					"response": [
+						{
+							"name": "Conversation Details with Models",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/chat/conversations/session123",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"chat",
+										"conversations",
+										"session123"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"sessionId\": \"session123\",\n    \"createdAt\": \"2025-09-30T01:05:45.123Z\",\n    \"messageCount\": 7,\n    \"models\": [\n        \"deepseek/deepseek-chat-v3.1:free\",\n        \"x-ai/grok-4-fast:free\",\n        \"google/gemma-3-27b-it:free\"\n    ],\n    \"messages\": [\n        {\n            \"role\": \"user\",\n            \"content\": \"What is artificial intelligence?\",\n            \"timestamp\": \"2025-09-30T01:05:45.123Z\",\n            \"model\": null\n        },\n        {\n            \"role\": \"assistant\",\n            \"content\": \"AI is the simulation of human intelligence in machines...\",\n            \"timestamp\": \"2025-09-30T01:05:46.456Z\",\n            \"model\": \"deepseek/deepseek-chat-v3.1:free\"\n        },\n        {\n            \"role\": \"assistant\",\n            \"content\": \"Artificial Intelligence refers to the development of computer systems...\",\n            \"timestamp\": \"2025-09-30T01:05:47.789Z\",\n            \"model\": \"x-ai/grok-4-fast:free\"\n        },\n        {\n            \"role\": \"assistant\",\n            \"content\": \"AI is a branch of computer science that aims to create intelligent machines...\",\n            \"timestamp\": \"2025-09-30T01:05:48.123Z\",\n            \"model\": \"google/gemma-3-27b-it:free\"\n        }\n    ]\n}"
+						}
+					]
+					},
+					{
+						"name": "Delete Conversation",
+						"request": {
+							"method": "DELETE",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"url": {
+								"raw": "{{base_url}}/chat/conversations/{{sessionId}}",
+								"host": [
+									"{{base_url}}"
+								],
+								"path": [
+									"chat",
+									"conversations",
+									"{{sessionId}}"
+								]
+							},
+						"description": "Delete a specific conversation completely"
+					},
+					"response": [
+						{
+							"name": "Conversation Deleted",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/chat/conversations/session123",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"chat",
+										"conversations",
+										"session123"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain;charset=UTF-8"
+								}
+							],
+							"cookie": [],
+							"body": "Conversation deleted: session123"
+						}
+					]
+					}
+				]
+			},
+			{
+				"name": "Test Examples",
+			"item": [
+				{
+					"name": "Test DeepSeek Model",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/chat/ask?question=Hello, how are you?&model=deepseek&sessionId={{sessionId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chat",
+								"ask"
+							],
+							"query": [
+								{
+									"key": "question",
+									"value": "Hello, how are you?"
+								},
+								{
+									"key": "model",
+									"value": "deepseek"
+								},
+								{
+									"key": "sessionId",
+									"value": "{{sessionId}}"
+								}
+							]
+						},
+						"description": "Test the DeepSeek model with a simple greeting"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Grok Model",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/chat/ask?question=What is artificial intelligence?&model=grok&sessionId={{sessionId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chat",
+								"ask"
+							],
+							"query": [
+								{
+									"key": "question",
+									"value": "What is artificial intelligence?"
+								},
+								{
+									"key": "model",
+									"value": "grok"
+								},
+								{
+									"key": "sessionId",
+									"value": "{{sessionId}}"
+								}
+							]
+						},
+						"description": "Test the Grok model with a technical question"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Gemma Model",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/chat/ask?question=Explain quantum computing&model=gemma&sessionId={{sessionId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chat",
+								"ask"
+							],
+							"query": [
+								{
+									"key": "question",
+									"value": "Explain quantum computing"
+								},
+								{
+									"key": "model",
+									"value": "gemma"
+								},
+								{
+									"key": "sessionId",
+									"value": "{{sessionId}}"
+								}
+							]
+						},
+						"description": "Test the Gemma model with a complex topic"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Conversation Flow",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/chat/ask?question=My name is John. What should I call you?&model=deepseek&sessionId={{sessionId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chat",
+								"ask"
+							],
+							"query": [
+								{
+									"key": "question",
+									"value": "My name is John. What should I call you?"
+								},
+								{
+									"key": "model",
+									"value": "deepseek"
+								},
+								{
+									"key": "sessionId",
+									"value": "{{sessionId}}"
+								}
+							]
+						},
+						"description": "Test conversation context with follow-up question"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Comparison Mode",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/chat/ask?question=What is machine learning?&model=all&sessionId={{sessionId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chat",
+								"ask"
+							],
+							"query": [
+								{
+									"key": "question",
+									"value": "What is machine learning?",
+									"description": "Test question for all models"
+								},
+								{
+									"key": "model",
+									"value": "all",
+									"description": "Compare all models"
+								},
+								{
+									"key": "sessionId",
+									"value": "{{sessionId}}",
+									"description": "Session ID for conversation"
+								}
+							]
+						},
+						"description": "Test comparison mode with all models"
+					},
+					"response": []
+				},
+				{
+					"name": "Follow-up Question",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/chat/ask?question=Can you explain more about that?&model=deepseek&sessionId={{sessionId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chat",
+								"ask"
+							],
+							"query": [
+								{
+									"key": "question",
+									"value": "Can you explain more about that?",
+									"description": "Follow-up question"
+								},
+								{
+									"key": "model",
+									"value": "deepseek",
+									"description": "AI model"
+								},
+								{
+									"key": "sessionId",
+									"value": "{{sessionId}}",
+									"description": "Session ID from previous conversation"
+								}
+							]
+						},
+						"description": "Ask a follow-up question in the same conversation"
+					},
+					"response": []
+				},
+				{
+					"name": "List All Conversations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/chat/conversations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chat",
+								"conversations"
+							]
+						},
+						"description": "Get all conversations for sidebar display"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specific Conversation",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/chat/conversations/{{sessionId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chat",
+								"conversations",
+								"{{sessionId}}"
+							]
+						},
+						"description": "Get details of a specific conversation"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Conversation",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/chat/conversations/{{sessionId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chat",
+								"conversations",
+								"{{sessionId}}"
+							]
+						},
+						"description": "Delete a specific conversation"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string",
+			"description": "Base URL for the API"
+		},
+		{
+			"key": "question",
+			"value": "Hello, how can you help me?",
+			"type": "string",
+			"description": "Default question for testing"
+		},
+		{
+			"key": "model",
+			"value": "all",
+			"type": "string",
+			"description": "Default AI model to use (all for comparison mode)"
+		},
+		{
+			"key": "sessionId",
+			"value": "test-session-123",
+			"type": "string",
+			"description": "Default session ID for testing"
+		}
+	]
+}

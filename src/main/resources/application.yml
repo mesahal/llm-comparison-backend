@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: AIDemo
+  ai:
+    openai:
+      #api-key: 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
+      api-key: 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
+      base-url: https://openrouter.ai/api/v1
+      chat:
+        options:
+          model: meta-llama/llama-4-maverick:free
+          temperature: 0.7
+          max-tokens: 1000
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: root
+    password: Admin@123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
